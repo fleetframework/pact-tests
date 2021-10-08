@@ -1,0 +1,22 @@
+#Ignore Gradle cache
+.gradle
+
+#Ignore IDE project files
+.settings
+.project
+.classpath
+**/bin
+*.iml
+*.ipr
+*.iws
+**/.idea
+
+#Build Dirs#
+output/
+.out/**
+out/**
+**/out/**
+**/build/**
+
+#Pact
+**/pacts

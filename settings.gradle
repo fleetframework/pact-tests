@@ -1,0 +1,5 @@
+rootProject.name = 'pact-tests'
+include 'provider'
+include 'provider'
+include 'consumer'
+
