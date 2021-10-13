@@ -9,8 +9,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 @Consumer("rp-user")
-@PactBroker(scheme = "https", host = "pact.fleetframework.io",
-        authentication = @PactBrokerAuth(username = "pact", password = "pact_fleet"))
+@PactBroker(scheme = "https", host = "${brokerUrl}",
+        authentication = @PactBrokerAuth(username = "${brokerUsername}", password = "${brokerPassword}"))
 public abstract class AbstractTest {
     @BeforeAll
     static void enablePublishingPact() {
@@ -19,7 +19,7 @@ public abstract class AbstractTest {
 
     @BeforeEach
     void before(PactVerificationContext context) {
-        context.setTarget(new HttpsTestTarget("dev.fleetframework.io", 443));
+        context.setTarget(new HttpsTestTarget(System.getenv("url"), 443));
     }
 
 }

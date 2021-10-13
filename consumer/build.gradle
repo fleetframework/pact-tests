@@ -2,30 +2,34 @@ description = 'consumer'
 
 ext {
     set('lombokVersion', "1.18.16")
+    set('pactJunitVersion', "4.0.10")
+    set('assertjVersion', "3.21.0")
+    set('httpcoreVersion', "4.4.14")
+    set('httpclientVersion', "4.5.13")
+    set('lombokVersion', "1.18.16")
 }
 
 dependencies {
-    testImplementation "au.com.dius:pact-jvm-consumer-junit5:4.0.10"
-    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.21.0'
-    testImplementation group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'
-    testImplementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+    testImplementation "au.com.dius:pact-jvm-consumer-junit5:${pactJunitVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation "org.apache.httpcomponents:httpcore:${httpcoreVersion}"
+    testImplementation "org.apache.httpcomponents:httpclient:${httpclientVersion}"
     implementation "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
-/*pact {
-    publish {
-        def path = "${project.projectDir}"
-        pactDirectory = path + '/pacts'
-        pactBrokerUrl = 'http://127.0.0.1:8282'
-    }
-}*/
+test {
+    environment "project", System.getProperty('project')
+    environment "username", System.getProperty('username')
+    environment "password", System.getProperty('password')
+    environment "url", System.getProperty('url')
+}
 
 pact {
     broker {
-        pactBrokerUrl = 'https://pact.fleetframework.io/'
-        pactBrokerUsername = 'pact'
-        pactBrokerPassword = 'pact_fleet'
+        pactBrokerUrl = project.hasProperty('brokerUrl') ? "https://" + project.getProperty('brokerUrl') : "" //'https://pact.fleetframework.io/'
+        pactBrokerUsername = project.hasProperty('brokerUsername') ? project.getProperty('brokerUsername') : "" //pact
+        pactBrokerPassword = project.hasProperty('brokerPassword') ? project.getProperty('brokerPassword') : ""//pact_fleet
     }
     publish {
         def path = "${project.projectDir}"

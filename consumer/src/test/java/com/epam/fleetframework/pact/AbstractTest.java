@@ -25,7 +25,7 @@ import java.util.List;
 
 public abstract class AbstractTest {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(AbstractTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTest.class);
     protected String token = getAuthToken();
     protected long dateTimeInMills = new Date().getTime();
 
@@ -62,7 +62,7 @@ public abstract class AbstractTest {
                 .given("starting launch")
                 .uponReceiving("start launch")
                 .method("POST")
-                .path("/api/v2/jdi-tests/launch")
+                .path(String.format("/api/v2/%s/launch", System.getenv("project")))
                 .headers("Authorization", "Bearer " + token)
                 .body(bodyRequest)
                 .willRespondWith()
@@ -95,8 +95,8 @@ public abstract class AbstractTest {
 
     protected String getAuthToken() {
         List<NameValuePair> body = Form.form().add("grant_type", "password")
-                .add("username", "superadmin")
-                .add("password", "erebus").build();
+                .add("username", System.getenv("username"))
+                .add("password", System.getenv("password")).build();
         HttpResponse httpResponse;
         String jsonResponse = "";
         try {

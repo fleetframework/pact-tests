@@ -4,4 +4,10 @@ dependencies {
     testImplementation "au.com.dius:pact-jvm-provider-junit5:4.0.10"
 }
 
-
+test {
+    environment "brokerUrl", System.getProperty('brokerUrl')
+    environment "brokerUsername", System.getProperty('brokerUsername')
+    environment "brokerPassword", System.getProperty('brokerPassword')
+    environment "url", System.getProperty('url')
+    useJUnitPlatform()
+}
